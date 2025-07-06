@@ -287,6 +287,107 @@ curl -s -X POST http://localhost:8080/v1/enricher/company \
 GIN_MODE=debug ./server -api-key="your_key"
 ```
 
+## Docker Deployment
+
+### Building the Docker Image
+
+```bash
+# Build the image
+docker build -t tripleqleads-demo .
+
+# Or with a specific tag
+docker build -t tripleqleads-demo:v1.0.0 .
+```
+
+### Running with Docker
+
+#### Basic Usage
+```bash
+docker run -d \
+  --name tripleqleads-demo \
+  -p 8080:8080 \
+  -e TRIPLEQLEADS_API_KEY="key_your_actual_api_key_here" \
+  tripleqleads-demo
+```
+
+#### Custom Port
+```bash
+docker run -d \
+  --name tripleqleads-demo \
+  -p 3000:3000 \
+  -e TRIPLEQLEADS_API_KEY="key_your_actual_api_key_here" \
+  -e PORT="3000" \
+  tripleqleads-demo
+```
+
+#### Using Environment File
+Create a `.env` file:
+```bash
+# .env
+TRIPLEQLEADS_API_KEY=key_your_actual_api_key_here
+PORT=8080
+```
+
+Run with environment file:
+```bash
+docker run -d \
+  --name tripleqleads-demo \
+  -p 8080:8080 \
+  --env-file .env \
+  tripleqleads-demo
+```
+
+### Docker Compose
+
+Create a `docker-compose.yml` file:
+```yaml
+version: '3.8'
+
+services:
+  tripleqleads-demo:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - TRIPLEQLEADS_API_KEY=key_your_actual_api_key_here
+      - PORT=8080
+    restart: unless-stopped
+```
+
+Run with Docker Compose:
+```bash
+# Start the service
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop the service
+docker-compose down
+```
+
+### Docker Commands
+
+```bash
+# View running containers
+docker ps
+
+# View logs
+docker logs tripleqleads-demo
+
+# Follow logs
+docker logs -f tripleqleads-demo
+
+# Stop container
+docker stop tripleqleads-demo
+
+# Remove container
+docker rm tripleqleads-demo
+
+# Remove image
+docker rmi tripleqleads-demo
+```
+
 ## Contributing
 
 1. Fork the repository
