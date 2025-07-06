@@ -4,10 +4,12 @@ import (
 	"flag"
 	"log"
 	"os"
+	"time"
 	"tripleqleads-demo/pkg"
 	"tripleqleads-demo/pkg/handlers"
 	"tripleqleads-demo/services"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -41,6 +43,27 @@ func main() {
 
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
+
+	// CORS middleware
+	r.Use(cors.New(cors.Config{
+		AllowOrigins: []string{
+			"http://localhost:3000",
+		},
+		AllowMethods: []string{
+			"GET",
+			"POST",
+			"OPTIONS",
+		},
+		AllowHeaders: []string{
+			"Origin",
+			"Content-Length",
+			"Content-Type",
+			"Authorization",
+			"Accept",
+		},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 
 	r.Use(pkg.NewRateLimitMiddleware())
 
